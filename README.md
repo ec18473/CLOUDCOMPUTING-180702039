@@ -1,5 +1,5 @@
 # Which Pokemon are you?
-A python-flask based web app leveraging on google cloud and kubernetes engine. The app is implements user based policies and requires users to sign up before using the same. It randomly chooses a pokemon and queries the cassandra database set up in the Google Cloud to collect the details of the pokemon and displays it dynamically. It also compliments the functionality by using an external pokemon api to show the image of the pokemon. 
+A python-flask based web app leveraging on google cloud and kubernetes engine. The app is implements user based policies and hence requires users to sign up before using the same. It randomly chooses a pokemon and queries the cassandra database set up in the Google Cloud to collect the details of the pokemon and displays it dynamically. It also compliments the functionality by using an external pokemon api to show the image of the pokemon. 
 
 The user access system uses hashing of user passwords in a local database using SHA256 algorithm. It can also be extended to md5, sha1, sha224, sha256, sha384, and sha512. By default, HASHING_METHOD defaults to sha256 and HASHING_ROUNDS defaults to 1.
 
