@@ -82,8 +82,6 @@ def logout():
 
 @app.route('/<int:user_id>/home')
 @login_required
-
-
 def main(user_id):
 	 
 	global client
@@ -124,6 +122,12 @@ def newTask(user_id):
 			raise ValueError('There is some wrong field here!')
 	return render_template('new_task.html', form=form)
 
+@app.route('/<int:user_id>/search',methods=('GET', 'POST'))
+@login_required
+def searchuser(user_id):
+
+	print 'hit search'
+	return str(user_id)
 
 
 @app.route('/')
