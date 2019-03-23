@@ -1,0 +1,64 @@
+{% extends 'layout.html' %}
+
+{% block title %} 
+    Home
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col s12">
+            <h1 class="center-align blue-text text-lighten-1" style="font-family: 'Fontdiner Swanky', cursive; padding-top: 100px;">Which POKEMON ARE YOU ?</h1>
+            <h3 class="center-align red-text text-lighten-1" style="font-family: 'Fontdiner Swanky', cursive; padding-top: 60px;">Cloud Computing Coursework</h3>
+
+            </div>
+    </div>
+    
+    {% if current_user.is_authenticated %}
+            <div class="row">
+                <div class="right-align col s12">
+                    <a href="{{ url_for('logout') }}" class="waves-effect waves-light btn blue">Logout</a>
+                </div>
+            </div>
+            <div class="divider"></div>
+            <br><br>
+            <div class="row">
+                <div class="s12 center-align">
+                    <div class="flow-text">
+                        Welcome, <b>{{ current_user.username.capitalize() }}</b> !
+                    </div>
+                </div>
+            </div>
+
+            <br>
+
+            <div class="row">
+                <div class="col s6 right-align">
+                    <a href="{{ url_for('main', user_id = current_user.id) }}" class="waves-effect waves-light btn green">Find which pokemon aree you</a>
+                </div>
+                <div class="col s6 left-align">
+                    <a href="{{ url_for('newTask', user_id=current_user.id) }}" class="waves-effect waves-light btn green"> <span> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspBrowse Pokemon(BETA)&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp </a>
+                </div>
+            </div>
+    {% else %}
+        <div class="row">
+            <div class="col s12">
+                 <div class="flow-text">
+                     <!-- A <b>Todo List</b> always comes in handy when planning to do many things.<b> So, hurry!</b> Sign up to create your personalised <b>Todo list</b> and make your life <b>easier</b>. -->
+                </div>
+            </div>
+        </div>
+        <div class="divider"></div>
+        
+        <br>
+        <div class="row">
+            <div class="col s6 right-align">
+                <a href="{{ url_for('signup') }}" class="waves-effect waves-light btn blue z-depth-5">REGISTER</a>
+            </div>
+            <div class="col s6 left-align">
+                <a href="{{ url_for('login') }}" class="waves-effect waves-light btn blue z-depth-5">Launch App</a>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
