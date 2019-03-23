@@ -8,14 +8,19 @@ import requests
 import models
 import forms
 import os
+import config
 
 
 
 client=pokepy.V2Client()
 
 app = Flask(__name__)
-app.secret_key = "jasddbhA4576GJLKDSHHOAUI.3KSDFH_75"
-salt = "jasddbhA4576GJLKDSHHOAUI.3KSDFH_75"
+
+
+app.secret_key = config.token
+salt = config.token
+
+
 
 hashing = Hashing(app)
 

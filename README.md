@@ -31,3 +31,13 @@ If you are using anything less than Python 2.7.9 you will only have the guarante
 * Run the project using `python app.py`.
 
 * App can be viewed at `http://0.0.0.0:8080/`
+
+## Setting up the hash before you run the application
+
+1. Create a file called config.py in the same directory as your app.py.
+2. Create a variable with a strong secret key example token = "jabdadbhA4576GJLKDSHHOAUI.3KSDFH_75".
+
+## HATEOAS (Hypermedia as the Engine of Application State) 
+It is a constraint of the REST application architecture that keeps the RESTful style architecture unique from most other network application architectures. The term “hypermedia” refers to any content that contains links to other forms of media such as images, movies, and text.
+
+This architectural style lets you use hypermedia links in the response contents so that the client can dynamically navigate to the appropriate resource by traversing the hypermedia links. This is conceptually the same as a web user navigating through web pages by clicking the appropriate hyperlinks in order to achieve a final goal.
