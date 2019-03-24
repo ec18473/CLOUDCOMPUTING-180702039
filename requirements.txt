@@ -8,3 +8,4 @@ WTForms==2.1
 pokepy
 Flask-hashing
 pyopenssl
+cassandra-driver
