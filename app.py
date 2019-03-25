@@ -2,6 +2,7 @@ import datetime, json
 from flask import (Flask, g, render_template, flash, redirect, url_for, request)
 from flask_login import (LoginManager, login_user, logout_user, login_required, current_user)
 from flask_hashing import Hashing
+from cassandra.cluster import Cluster
 import random
 import pokepy
 import requests
@@ -20,7 +21,8 @@ app = Flask(__name__)
 app.secret_key = config.token
 salt = config.token
 
-
+cluster = Cluster(['cassandra'])
+session = cluster.connect()
 
 hashing = Hashing(app)
 
@@ -101,10 +103,18 @@ def main(user_id):
 	json1_data = json.loads(data)
 	poke_name = (json1_data["forms"][0].get("name"))
 	poke_img =  (json1_data["sprites"]["front_default"])
-	
 
+	#cassandra querying
+	rows = session.execute( """Select * From pokemon.stats where id = {} ALLOW FILTERING """.format(str(poke)))
+	for pokemon in rows:
+		hp = pokemon.hp
+		at = pokemon.attack
+		df = pokemon.defence
+		sa = pokemon.spattack
+		sd = pokemon.spdefence
+		sp = pokemon.speed
 	todo = models.Todo.select().where(models.Todo.userid == user_id)
-	return render_template('home.html', todo=todo, poke=poke_name, poke_img = poke_img)
+	return render_template('home.html', todo=todo, poke=poke_name, poke_img = poke_img, hp=hp, at=at, df=df, sa=sa, sd=sd, sp=sp)
 
 @app.route('/<int:user_id>/browsepokemo', methods=('GET', 'POST'))
 @login_required

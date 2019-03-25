@@ -40,7 +40,7 @@ If you are using anything less than Python 2.7.9 you will only have the guarante
 ## Setting up the hash before you run the application
 
 1. Create a file called config.py in the same directory as your app.py.
-2. Create a variable with a strong secret hashing password like 
+2. Create a variable with a strong secret hashing password for example
 ```python
 token = `jabdadbhA4576GJLKDSHHOAUI.3KSDFH_75`
 ```
