@@ -5,7 +5,6 @@ from flask_hashing import Hashing
 from cassandra.cluster import Cluster
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
-
 from flask_restful import Resource, Api
 import random
 import pokepy
