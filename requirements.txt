@@ -9,3 +9,4 @@ WTForms==2.1
 pokepy
 Flask-hashing
 cassandra-driver
+flask-restful

@@ -3,6 +3,10 @@ from flask import (Flask, g, render_template, flash, redirect, url_for, request)
 from flask_login import (LoginManager, login_user, logout_user, login_required, current_user)
 from flask_hashing import Hashing
 from cassandra.cluster import Cluster
+from flask import Flask, request, jsonify
+from flask_sqlalchemy import SQLAlchemy
+
+from flask_restful import Resource, Api
 import random
 import pokepy
 import requests
@@ -31,6 +35,26 @@ DEBUG = True
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+
+
+#Custom error messages
+errors = {
+    'Pokemon DOES NOT EXIST': {
+        'message': "Sorry. POKEMON DOES NOT EXIST. Try different number",
+        'status': 404,
+        'For more info': "Visit pokemon support docs"
+    },
+    'ResourceDoesNotExist': {
+        'message': "A resource with that ID no longer exists.",
+        'status': 410,
+        'extra': "Any extra information you want.",
+    },
+}
+
+
+api = Api(app, errors=errors) 
+
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -148,6 +172,36 @@ def searchuser(user_id):
 @app.route('/')
 def index():
 	return render_template('index.html')
+
+
+
+
+
+#Hateous implementation
+class multi(Resource):
+    def get(self, num):
+        if num < 721:
+            rows = session.execute("""Select * From pokemon.stats where id = {} ALLOW FILTERING """.format(str(num)))
+            for pokemon in rows:
+                name = pokemon.name
+                hp = pokemon.hp
+                at = pokemon.attack
+                df = pokemon.defence
+                sa = pokemon.spattack
+                sd = pokemon.spdefence
+                sp = pokemon.speed
+            return jsonify({'POKEMON': pokemon.name, 'HP': pokemon.hp, 'Attack': pokemon.attack, 
+            'Defence': pokemon.defence, 'Spl Attack': pokemon.spattack,
+            'Spl Defence': pokemon.spdefence, 'Speed': pokemon.speed})
+        else:
+            return errors['Pokemon DOES NOT EXIST']
+
+
+api.add_resource(multi, '/pokemon/<int:num>')
+
+
+
+
 
 if __name__ == '__main__':
 	models.initialize()

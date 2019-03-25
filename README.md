@@ -51,6 +51,25 @@ It is a constraint of the REST application architecture that keeps the RESTful s
 
 This architectural style lets you use hypermedia links in the response contents so that the client can dynamically navigate to the appropriate resource by traversing the hypermedia links. This is conceptually the same as a web user navigating through web pages by clicking the appropriate hyperlinks in order to achieve a final goal.
 
+When you try to make a get request like 
+Based on the id, It queries the database and creates a dynamic JSON.
+
+http://35.242.189.172/pokemon/36
+
+It will return JSON in the form
+
+{
+    POKEMON : Pikeachu
+    Attack  : 56
+    Defence : 78
+    Speed   : 78
+}
+
+
+## Docker image is available and you can run using the following command :
+
+* kubectl run pokemon-app --image=gcr.io/pivotal-trail-229309/app11 --port 8080
+
 ## Contributing 
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.

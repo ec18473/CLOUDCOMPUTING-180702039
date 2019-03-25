@@ -8,7 +8,6 @@ from flask_login import UserMixin
 
 app = Flask(__name__)
 hashing = Hashing(app)
-salt = "jasddbhA4576GJLKDSHHOAUI.3KSDFH_75"
 
 db = SqliteDatabase('list.db')
 
