@@ -68,7 +68,7 @@ It will return JSON in the form
 
 ## Docker image is available and you can run using the following command on gcloud:
 
-```python
+```docker
 kubectl run pokemon-app --image=gcr.io/pivotal-trail-229309/app11 --port 8080
 ```
 
