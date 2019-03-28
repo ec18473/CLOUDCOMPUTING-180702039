@@ -63,5 +63,6 @@ server.crt
 
 #Hiding Hashing passwords
 config.py
+demo.py
 __pycache__
 ipynb_checkpoints

@@ -1,3 +1,4 @@
+#Importing Libraries
 import datetime, json
 from flask import (Flask, g, render_template, flash, redirect, url_for, request)
 from flask_login import (LoginManager, login_user, logout_user, login_required, current_user)
@@ -12,18 +13,18 @@ import requests
 import models
 import forms
 import os
-import config
+import config #Note:config.py file has to be created.
 
 
-
+#Python Wrapper for pokemon API
 client=pokepy.V2Client()
 
 app = Flask(__name__)
 
-
+#Secret key & sal hidden and imported from config.py
 app.secret_key = config.token
 salt = config.token
-
+#Cassandra configuration
 cluster = Cluster(['cassandra'])
 session = cluster.connect()
 
@@ -54,7 +55,7 @@ errors = {
 api = Api(app, errors=errors) 
 
 
-
+#Login manager to return user credentials
 @login_manager.user_loader
 def load_user(user_id):
     try:
@@ -72,7 +73,7 @@ def before_request():
 def after_request(response):
 	g.db.close()
 	return response
-
+#Signup page
 @app.route('/signup', methods=('GET', 'POST'))
 def signup():
 	form = forms.SignUpForm()
@@ -85,7 +86,7 @@ def signup():
         )
 		return redirect(url_for('index'))
 	return render_template('signup.html', form=form)
-
+#Login Page
 @app.route('/login', methods=('GET', 'POST'))
 def login():
 	form = forms.LoginForm()
@@ -102,14 +103,14 @@ def login():
 			else:
 				flash("Your email or password doesn't match!", "error")
 	return render_template('login.html', form=form)
-
+#Logout
 @app.route('/logout')
 @login_required
 def logout():
 	logout_user()
 	flash("You've been logged out! Come back soon!", "success")
 	return redirect(url_for('index'))
-
+#User based session 
 @app.route('/<int:user_id>/home')
 @login_required
 def main(user_id):
@@ -124,41 +125,20 @@ def main(user_id):
 	data= resp.json()
 	data=json.dumps(data, indent=4)
 	json1_data = json.loads(data)
-	poke_name = (json1_data["forms"][0].get("name"))
-	poke_img =  (json1_data["sprites"]["front_default"])
+	poke_name = (json1_data["forms"][0].get("name")) #Pokemon name abstraction from api
+	poke_img =  (json1_data["sprites"]["front_default"]) #Pokemon image url abstraction from api
 
 	#cassandra querying
 	rows = session.execute( """Select * From pokemon.stats where id = {} ALLOW FILTERING """.format(str(poke)))
-	for pokemon in rows:
+	for pokemon in rows: #To pass the obtained information to HTML pages
 		hp = pokemon.hp
 		at = pokemon.attack
 		df = pokemon.defence
 		sa = pokemon.spattack
 		sd = pokemon.spdefence
 		sp = pokemon.speed
-	todo = models.Todo.select().where(models.Todo.userid == user_id)
 	return render_template('home.html', todo=todo, poke=poke_name, poke_img = poke_img, hp=hp, at=at, df=df, sa=sa, sd=sd, sp=sp)
 
-@app.route('/<int:user_id>/browsepokemo', methods=('GET', 'POST'))
-@login_required
-def newTask(user_id):
-	form = forms.TaskForm()
-	if form.validate_on_submit():
-		try:
-			flash("You've added a new task!")
-			models.Todo.create_task(
-				title = form.title.data,
-				content = form.content.data,
-				priority = form.priority.data,
-				date = form.date.data,
-				userid = user_id,
-				is_done = False
-				)
-			todo = models.Todo.get()
-			return redirect(url_for('main', user_id=user_id))
-		except AttributeError:
-			raise ValueError('There is some wrong field here!')
-	return render_template('new_task.html', form=form)
 
 @app.route('/<int:user_id>/search',methods=('GET', 'POST'))
 @login_required
@@ -173,15 +153,12 @@ def index():
 	return render_template('index.html')
 
 
-
-
-
 #Hateous implementation
 class multi(Resource):
     def get(self, num):
-        if num < 721:
+        if num < 721: #Limiting the search to the number of pokemons in the database
             rows = session.execute("""Select * From pokemon.stats where id = {} ALLOW FILTERING """.format(str(num)))
-            for pokemon in rows:
+            for pokemon in rows: #To pass the obtained information to HTML pages
                 name = pokemon.name
                 hp = pokemon.hp
                 at = pokemon.attack
@@ -195,7 +172,7 @@ class multi(Resource):
         else:
             return errors['Pokemon DOES NOT EXIST']
 
-
+#Dyanamic URL that returns data from as per accordingly
 api.add_resource(multi, '/pokemon/<int:num>')
 
 

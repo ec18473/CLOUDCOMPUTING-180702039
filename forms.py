@@ -1,3 +1,4 @@
+#Python code hand registration form validation
 from flask_wtf import Form
 
 from wtforms import StringField, PasswordField, DateTimeField, SelectField, TextAreaField
@@ -57,9 +58,3 @@ class SignUpForm(Form):
 class LoginForm(Form):
 	email = StringField('email', validators=[DataRequired(), Email()])
 	password = PasswordField('password', validators=[DataRequired()])
-
-class TaskForm(Form):
-	title = StringField('title', validators=[DataRequired()])
-	content = TextAreaField('content')
-	priority = SelectField('priority', choices=[('', 'Priority'), ('low','low'), ('medium', 'medium'), ('high','high')], default='Priority')
-	date = DateField('Pick a Date')

@@ -1,11 +1,11 @@
 import datetime
-from peewee import *
+from peewee import * #Model definition 
 from flask_hashing import Hashing
 from flask import (Flask, g, render_template, flash, redirect, url_for, request)
-
+import config
 # from flask_bcrypt import generate_password_hash
 from flask_login import UserMixin
-
+salt = config.token
 app = Flask(__name__)
 hashing = Hashing(app)
 
@@ -27,34 +27,11 @@ class User(UserMixin, Model):
 				cls.create(
 					username=username,
 					email=email,
-					password=hashing.hash_value(password, salt)
-					# password=generate_password_hash(password)
+					password=hashing.hash_value(password, salt) #Generate hash of user password using salt
 				)
 		except IntegrityError:
 			raise ValueError("User already exists")
 
-class Todo(Model):
-	title = CharField()
-	content = CharField()
-	priority = CharField()
-	date = DateField()
-	userid = IntegerField()
-	is_done = BooleanField(default=False)
-
-	class Meta:
-		database = db
-
-	@classmethod
-	def create_task(cls, title, content, priority, date, userid, is_done):
-		with db.transaction():
-			cls.create(
-				title=title,
-				content=content,
-				priority=priority,
-				date=date,
-				userid = userid,
-				is_done = is_done
-			)
 
 def initialize():
 	db.connect()
