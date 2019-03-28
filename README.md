@@ -2,7 +2,7 @@
 
 ## About
 
-A python-flask based web app leveraging on google cloud and kubernetes engine. The app is implements user based policies and hence requires users to sign up before using the same. It randomly chooses a pokemon and queries the cassandra database set up in the Google Cloud to collect the details of the pokemon and displays it dynamically. It also compliments the functionality by using an external pokemon api [pokeapi](https://pokeapi.co/) to show the image of the pokemon. 
+A python-flask based web app leveraging on google cloud and kubernetes engine. The app is implements user based policies and hence requires users to sign up before using the same as the user based content management is implemented. It randomly chooses a pokemon and queries the cassandra database set up in the Google Cloud to collect the details of the pokemon and displays it dynamically. It also compliments the functionality by using an external pokemon api [pokeapi](https://pokeapi.co/) to show the image of the pokemon. 
 
 Due to the recent increased prevelance of powerful hardware, such as modern GPUs, hashes have become increasingly easy to crack. A proactive solution to this is to use a hash that was designed to be "de-optimized". 
 
